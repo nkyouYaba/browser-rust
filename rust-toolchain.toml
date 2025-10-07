@@ -1,0 +1,5 @@
+[toolchain]
+channel = "nightly-2024-05-01"
+components = ["cargo", "rustc", "rust-src"]
+targets = ["x86_64-unknown-none"]
+profile = "default"
