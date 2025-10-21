@@ -1,11 +1,10 @@
 extern crate alloc;
-use crate::alloc::string::ToString;
 use alloc::format;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
-use core::error::Error;
-use core::http::HttpResponse;
 use noli::net::{lookup_host, SocketAddr, TcpStream};
+use saba_core::error::Error;
+use saba_core::http::HttpResponse;
 
 pub struct HttpClient {}
 
@@ -22,6 +21,7 @@ impl HttpClient {
             Err(e) => {
                 return Err(Error::Network(format!(
                     "Failed to find IP addresses: {:#?}",
+                    e,
                 )))
             }
         };
@@ -37,7 +37,7 @@ impl HttpClient {
         // TCPストリームの確立
         let mut stream = match TcpStream::connect(socket_addr) {
             Ok(stream) => stream,
-            Err(e) => {
+            Err(_e) => {
                 return Err(Error::Network(
                     "Failed to connect to TCP stream".to_string(),
                 ));
@@ -70,7 +70,7 @@ impl HttpClient {
         };
 
         // レスポンスの受信
-        let mut recieved = Vec::new();
+        let mut received = Vec::new();
         loop {
             let mut buf = [0u8; 4096];
             let bytes_read = match stream.read(&mut buf) {
@@ -87,7 +87,13 @@ impl HttpClient {
                 break;
             }
             // 読み込んだバイト数だけVecに追加
-            recieved.extend_from_slice(&buf[..bytes_read]);
+            received.extend_from_slice(&buf[..bytes_read]);
+        }
+
+        // receivedがUTF-8として有効であるかの判定
+        match core::str::from_utf8(&received) {
+            Ok(response) => HttpResponse::new(response.to_string()),
+            Err(e) => Err(Error::Network(format!("Invalid received response: {}", e))),
         }
     }
 }
