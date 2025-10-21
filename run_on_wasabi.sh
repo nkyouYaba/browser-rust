@@ -42,4 +42,6 @@ if [ ! -f $MAKEFILE_PATH ]; then
 fi
 
 make build
+# debug用
+set -x
 $OS_PATH/scripts/run_with_app.sh ./target/x86_64-unknown-none/release/$APP_NAME

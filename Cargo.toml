@@ -5,7 +5,7 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [ "core", "net/std" , "net/wasabi"]
+members = [ "saba_core", "net/std" , "net/wasabi"]
 
 [features]
 default = ["wasabi"]
@@ -17,6 +17,6 @@ path = "src/main.rs"
 required-features = ["wasabi"]
 
 [dependencies]
-core = { path = "./core" }
+saba_core = { path = "./saba_core" }
 net_wasabi = { path = "./net/wasabi", optional = true }
 noli = { git = "https://github.com/hikalium/wasabi.git", branch = "for_saba", optional = true }

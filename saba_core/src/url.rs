@@ -51,11 +51,11 @@ impl Url {
         let url_parts: Vec<&str> = self
             .url
             .trim_start_matches("http://")
-            .splitn(2, "/")
+            .splitn(2, '/')
             .collect();
 
         // port番号が指定されてたら、:の前までをhostとして抽出
-        if let Some(index) = url_parts[0].find(":") {
+        if let Some(index) = url_parts[0].find(':') {
             url_parts[0][..index].to_string()
         } else {
             url_parts[0].to_string()
@@ -67,11 +67,11 @@ impl Url {
         let url_parts: Vec<&str> = self
             .url
             .trim_start_matches("http://")
-            .splitn(2, "/")
+            .splitn(2, '/')
             .collect();
 
         // port番号が指定されてたら、:の後ろまでをportとして抽出
-        if let Some(index) = url_parts[0].find(":") {
+        if let Some(index) = url_parts[0].find(':') {
             url_parts[0][index + 1..].to_string()
         } else {
             // httpのデフォルトポートは80番
@@ -84,7 +84,7 @@ impl Url {
         let url_parts: Vec<&str> = self
             .url
             .trim_start_matches("http://")
-            .splitn(2, "/")
+            .splitn(2, '/')
             .collect();
 
         // pathが存在しない場合は空の文字列を返す
@@ -93,7 +93,7 @@ impl Url {
         }
 
         // 左側がpath、右側がsearchpart
-        let path_and_searchpart: Vec<&str> = url_parts[1].splitn(2, "?").collect();
+        let path_and_searchpart: Vec<&str> = url_parts[1].splitn(2, '?').collect();
         path_and_searchpart[0].to_string()
     }
 
@@ -102,7 +102,7 @@ impl Url {
         let url_parts: Vec<&str> = self
             .url
             .trim_start_matches("http://")
-            .splitn(2, "/")
+            .splitn(2, '/')
             .collect();
 
         // pathが存在しない場合は空の文字列を返す
@@ -111,7 +111,7 @@ impl Url {
         }
 
         // 左側がpath、右側がsearchpart
-        let path_and_searchpart: Vec<&str> = url_parts[1].splitn(2, "?").collect();
+        let path_and_searchpart: Vec<&str> = url_parts[1].splitn(2, '?').collect();
 
         // queryパラメータが存在しない場合はからの文字列を返す
         if path_and_searchpart.len() < 2 {
